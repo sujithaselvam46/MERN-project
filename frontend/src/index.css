@@ -1,0 +1,187 @@
+ html,body{
+  height: 100%;
+  background-image: linear-gradient( to  right,#A100FFFF,#119CFDFF)
+ }
+
+ :root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.uploader-container{
+  text-align: center;
+    background: rgba(255, 255, 255, 0.15);
+   width: 600px;
+   height: 500px;
+   margin: auto;
+  border-radius: 20px;
+  padding: 40px 50px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+  animation: fadeUp 0.8s ease;
+}
+.uploader-container h1{
+
+  line-height: 1.1;
+  font-size: 3.2em;
+  color: white;
+  background: linear-gradient(to bottom right,white  ,rgb(169, 210, 250) );
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+   animation: float 3s ease-in-out infinite;
+  
+}
+/* @keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+  100% { transform: translateY(0); }
+} */
+.jobRole{
+  margin-top: 20px;
+  color: white;
+  
+}
+.progress{
+  margin-top: 180px;
+}
+button{
+   border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+   position: relative;
+  overflow: hidden;
+    
+}
+button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,0.4),
+    transparent
+  );
+  transform: translateX(-100%);
+  transition: transform 0.6s;
+}
+
+button:hover::before {
+  transform: translateX(100%);
+}
+
+
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+.jobRole{
+  font-size: large;
+}
+
+.analysis-result h2{
+  font-size: 30px;
+  text-align: center;
+}
+.analysis-result{
+  height: 100%;
+  width: 800px;
+  margin-top: 80px;
+  color: white;
+ font-size: 20px;
+ 
+}
+pre{
+  width: 800px;
+}
+input{
+ 
+  font-size: larger;
+}
+select{
+  text-align: center;
+  padding: 8px;
+  border-radius: 8px;
+  font-size: medium;
+}
+option{
+background-color: blue;
+color: whitesmoke;
+background-color: black;
+}
+.final {
+  margin-top: 20px;
+  transition: all 0.3s ease;
+}
+
+.final.finished {
+  background: #f0fdf4;
+  border: 1px solid #22c55e;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+/* Result card */
+.analysis-result {
+  animation: fadeInUp 0.4s ease;
+  
+}
+.analysis-result h2{
+ position: relative;
+ left: 42%;
+}
+.analysis-result pre {
+background-color: rgb(30, 31, 31);
+  color: white;
+  padding: 16px;
+  border-radius: 8px;
+  border: 2px white;
+  box-shadow: 2px 2px px 2px white;
+  white-space: pre-wrap;
+  font-family: Arial, Helvetica, sans-serif;
+   position: relative;
+   left: 40%;
+}
+
+/* subtle entrance animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
