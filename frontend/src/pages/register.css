@@ -1,0 +1,106 @@
+body{
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
+}
+.register-container{
+    border-radius: 20px;
+    height: 400px;
+    width: 500px;
+    margin: auto;
+   background: rgba(255, 255, 255, 0.15);
+}
+.register-data label{
+    margin-right: 90px;
+}
+#special{
+    margin-left: -28px;
+}
+.register-data{
+    position: relative;
+    top: 50px;
+}
+.register-container button{
+    margin-top: 30px;
+    height: 50px;
+    text-align: center;
+    width: 150px;
+}
+.register-container h2{
+    position: relative;
+     top: 20px;
+     text-transform: uppercase;
+}
+.btn {
+      background-color: #121212;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Simple hover scale and color change */
+    .btn:hover {
+      background-color: #0b0b0b;
+      transform: scale(1.05);
+    }
+    /* Ripple-like animation */
+    .btn::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.5s ease, height 0.5s ease, opacity 0.5s ease;
+      opacity: 0;
+    }
+    .btn:active::after {
+      width: 200px;
+      height: 200px;
+      opacity: 1;
+      transition: 0s;
+    }
+.bsn {
+      background-color: #f4e9e9;
+      color: rgb(9, 9, 9);
+      padding: 12px 24px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Simple hover scale and color change */
+    .bsn:hover {
+      background-color: #ffffff;
+      transform: scale(1.05);
+    }
+    /* Ripple-like animation */
+    .bsn::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.5s ease, height 0.5s ease, opacity 0.5s ease;
+      opacity: 0;
+    }
+    .bsn:active::after {
+      width: 200px;
+      height: 200px;
+      opacity: 0;
+      transition: 0s;
+    }
+

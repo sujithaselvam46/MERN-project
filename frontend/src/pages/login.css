@@ -1,0 +1,46 @@
+
+.login-container{
+    border-radius: 20px;
+    height: 400px;
+    width: 500px;
+    margin: auto;
+    margin-top: 80px;
+   background: rgba(255, 255, 255, 0.15);
+  transition: transform 0.35s ease-in-out, 
+  
+}
+
+.login-content{
+   
+}
+.login-data label{
+    margin-right: 90px;
+}
+#special{
+    margin-left: -28px;
+}
+.login-data{
+   position: relative;
+   left: 10rem;
+   top: 3.3rem;
+}
+.login-container button{
+    margin-top: 30px;
+    height: 50px;
+    text-align: center;
+    width: 150px;
+}
+.login-container h2{
+    color: white;
+    position: relative;
+     top: 20px;
+     text-align: center;
+     text-transform: uppercase;
+}
+label{
+    color: white;
+}
+.login-container button{
+   
+    margin-left: 10px;
+}

@@ -1,0 +1,166 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(to right, #A100FFFF, #119CFDFF);
+}
+
+#root {
+  width: 100%;
+}
+
+:root {
+  /* unused default styles removed */
+}
+
+/* MAIN UPLOADER CONTAINER */
+.uploader-container {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.15);
+  width: 550px;
+  height: 350px;
+  margin: 50px auto 0;
+  border-radius: 20px;
+  padding: 40px 50px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+  animation: fadeUp 0.8s ease;
+}
+
+.uploader-container h1 {
+  line-height: 1.1;
+  font-size: 2.5em;
+  color: white;
+  background: linear-gradient(to bottom right, white, rgb(169, 210, 250));
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: float 3s ease-in-out infinite;
+}
+
+.jobRole {
+  margin-top: 20px;
+  color: white;
+}
+
+.progress {
+  margin-top: 100px;
+}
+
+/* FIXED BUTTON */
+button {
+  position: relative;  /* FIX FOR WHITE FLASH */
+  overflow: hidden;    /* FIX FOR WHITE FLASH */
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #fef9f9;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,0.4),
+    transparent
+  );
+  transform: translateX(-100%);
+  transition: transform 0.6s;
+}
+
+button:hover::before {
+  transform: translateX(100%);
+}
+
+button:hover {
+  border-color: #646cff;
+}
+
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+.jobRole {
+  font-size: large;
+ 
+}
+
+/* RESULT AREA */
+.analysis-result {
+  width: 70rem;
+  margin: 200px 0 0;
+  position: relative;
+  right: 45%;
+  color: white;
+  padding: 20px;
+  background: rgba(233, 223, 223, 0.08);
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-sizing: border-box;
+  animation: fadeInUp 0.4s ease;
+}
+
+.analysis-result h2 {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 18px;
+  font-size: 1.8rem;
+  color: #111010;
+}
+
+.analysis-result pre {
+  text-align: left;
+  width: 100%;
+  max-width: 100%;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: rgb(17, 24, 39);
+  padding: 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+  white-space: pre-wrap;
+  font-family: Arial, Helvetica, sans-serif;
+  overflow-x: auto;
+}
+
+.analysis-line-heading {
+  margin: 18px 0 8px;
+  font-weight: 700;
+  font-size: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #000;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-align: center;
+}
+
+.analysis-line-heading::before {
+  content: "• ";
+  color: #000;
+}
+
+.box {
+  text-align: left;
+  font-size: 20px;
+}
+
+.final {
+  margin-top: 20px;
+  transition: all 0.3s ease;
+}
+
+.final.finished {
+  background: #f0fdf4;
+  border: 1px solid #22c55e;
+  border-radius: 12px;
+  padding: 20px;
+}

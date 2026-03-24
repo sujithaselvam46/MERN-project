@@ -5,6 +5,8 @@ const path = require('path');
 require('dotenv').config();
 
 const resumeRoutes = require('./routes/resumeRoutes');
+const authRoutes=require('./routes/authRoutes')
+const feedbackRoutes = require('./routes/feedbackRoutes');
 
 const app = express();
 
@@ -15,6 +17,8 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
 app.use('/api/resume', resumeRoutes);
+app.use('/api/auth',authRoutes)
+app.use('/api/feedback', feedbackRoutes);
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI)

@@ -2,7 +2,6 @@ const fs = require("fs");
 const pdfParse = require("pdf-parse");
 const Groq = require("groq-sdk");
 const Resume = require("../models/Resume");
-
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 exports.analyzeResume = async (req, res) => {
@@ -17,34 +16,54 @@ exports.analyzeResume = async (req, res) => {
     const pdfData = await pdfParse(dataBuffer);
     const text = pdfData.text;
     // 🟦 ADDED — Detect Aadhar, PAN, Certificates, Marksheet, invoices, etc.
-    const badKeywords = [ 
-      //Govt Id
-      "aadhar", "aadhaar", "pan","passport",
+    const badKeywords = [
+      // Govt ID documents
+      "aadhar",
+      "aadhaar",
+      "pan",
+      "passport",
 
-      //certificates
-  // "certificate", "certification",
-  // "completion", "awarded", "training",
-  // "course", "participation", "grade",
-  "marksheet", "invoice", "hall ticket",
-  
-  //IBM certificate patterns
-  "ibm","skillsbuild","digital credential","verified badge","issued by ibm","credential id","learning hours","professional certificate","badge","achievement"]
-  ;
-    const resumeIndicators = ["experience", "education", "projects", "skills"];
+      // Other common non-resume docs
+      "invoice",
+      "marksheet",
+      "hall ticket",
+    ];
+
+    const resumeIndicators = [
+      "experience",
+      "education",
+      "projects",
+      "skills",
+      "summary",
+      "objective",
+      "contact",
+      "achievements",
+      "certifications",
+      "work experience",
+      "professional experience",
+    ];
 
     const lower = text.toLowerCase();
+    const hasBadKeywords = badKeywords.some((k) => lower.includes(k));
+    const hasResumeIndicators = resumeIndicators.some((k) => lower.includes(k));
 
-    if (badKeywords.some((k) => lower.includes(k))) {
-      return res.status(400).json({
-        error: `❌ Invalid File: ${req.file.filename}\nThis PDF appears to be an Aadhaar card, PAN card, certificate, invoice, or other NON-resume document.`
-      });
-    }
-
-    if (!resumeIndicators.some((k) => lower.includes(k))) {
+    // If the document doesn't look like a resume at all, reject it.
+    // If it contains resume indicators but also has a few bad keywords (e.g., mentions a certificate), we allow analysis but warn the user.
+    if (!hasResumeIndicators) {
       return res.status(400).json({
         error: `⚠️ Invalid File: ${req.file.filename}\nThis PDF does not appear to be a resume. Please upload a valid resume.`
       });
     }
+
+    const warnings = [];
+
+    if (hasBadKeywords) {
+      warnings.push(
+        "This file contains words commonly found in non-resume documents (e.g. invoice, mark sheet). If this is a resume, you may ignore this warning."
+      );
+    }
+
+    // Add any backend-generated warnings to the response later.
     // 🟦 END OF ADDED CODE
     // Simple copy-paste detection
     const sentences = text.split(/[.?!]\s/);
@@ -68,12 +87,15 @@ Include:
 3. Experience
 4. Education
 5. Strengths
-6. Weaknesses
+6. Weakness
 7. Validation score out of 10 (how suitable the resume is for the job role)
 
 Resume text: ${text}`;
 
     if (hasDuplicate) {
+      warnings.push(
+        "The resume appears to contain duplicated or repetitive sentences. This may impact the quality of the analysis."
+      );
       prompt += "\n⚠️ Note: The resume may contain copied or repetitive content.";
     }
 
@@ -92,7 +114,7 @@ Resume text: ${text}`;
       jobRole,
     });
 
-    res.json({ success: true, analysis: result, saved: savedResume });
+    res.json({ success: true, analysis: result, saved: savedResume, warnings });
 
   } catch (err) {
     console.error("Error analyzing resume:", err);

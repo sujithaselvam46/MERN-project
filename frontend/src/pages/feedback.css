@@ -1,0 +1,16 @@
+.feedback-container{
+     border-radius: 20px;
+    height: 400px;
+    width: 500px;
+    margin: auto;
+   background: rgba(255, 255, 255, 0.15);
+}
+ .feedback-container h2{
+    position: relative;
+    top: 30px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+ }
+.feedback-content{
+    margin-top: 120px;
+}

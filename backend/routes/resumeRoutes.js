@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const { analyzeResume, getAllResumes } = require("../controllers/resumeController");
+const authMiddleware=require("../middleware/authMiddleware")
 
 // Multer setup
 const storage = multer.diskStorage({
@@ -19,7 +20,7 @@ const upload = multer({
 
 // Routes
 // 1️⃣ Upload route with error handling
-router.post("/upload", (req, res, next) => {
+router.post("/upload",authMiddleware, (req, res, next) => {
   const uploadSingle = upload.single("resume");
 
   uploadSingle(req, res, function (err) {
@@ -30,6 +31,6 @@ router.post("/upload", (req, res, next) => {
     next(); // proceed to analyzeResume if file is valid
   });
 }, analyzeResume);
-router.get("/all", getAllResumes); // must be a function
+router.get("/all", authMiddleware,getAllResumes); // must be a function
 
 module.exports = router;
