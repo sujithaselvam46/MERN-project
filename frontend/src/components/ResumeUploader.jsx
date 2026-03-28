@@ -25,6 +25,7 @@ const ResumeUploader = () => {
   };
 
   const handleUpload = async () => {
+   
     if (!file) return alert('Please select a PDF file.');
 
     const formData = new FormData();
@@ -37,10 +38,14 @@ const ResumeUploader = () => {
 
     try {
       const token = localStorage.getItem("token");
+      if(!token){
+        alert("user not logged in")
+        return
+      }
       const response = await axios.post(
         'http://localhost:5000/api/resume/upload',
         formData,
-        { headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${token}`  } }
+        { headers: { 'Content-Type': 'multipart/form-data',   "Authorization": `Bearer ${token}` } }
       );
 
       // Backend returns an error → show alert
