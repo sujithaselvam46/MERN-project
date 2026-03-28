@@ -19,7 +19,7 @@ function App() {
             <h1>✨Welcome to AI Resume Analyzer✨</h1>
             <h3> Smart • Accurate • AI-powered resume scoring </h3>
             <p>New User? please Register...</p>
-            <p>Already hane an account? please Login...</p>
+            <p>Already have an account? please Login...</p>
           </div>
         } />
         <Route path="/register" element={<Register />} /> 
