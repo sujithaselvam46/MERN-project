@@ -6,16 +6,47 @@ const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 exports.analyzeResume = async (req, res) => {
   try {
+    console.log("\n========== RESUME UPLOAD START ==========");
+    console.log("Request received at:", new Date().toISOString());
+    console.log("User ID:", req.userId);
+    console.log("Body:", req.body);
+    console.log("File info:", req.file ? { originalname: req.file.originalname, size: req.file.size } : "NO FILE");
+
     if (!req.file) {
+      console.error("ERROR: No file provided");
       return res.status(400).json({ error: "No file uploaded" });
     }
 
     const { jobRole } = req.body;
+    
+    if (!jobRole) {
+      console.error("ERROR: No job role provided");
+      return res.status(400).json({ error: "Job role is required" });
+    }
 
-    const dataBuffer = fs.readFileSync(req.file.path);
+    console.log("Job Role:", jobRole);
+
+    // Use the buffer directly from multipart upload
+    const dataBuffer = req.file.buffer;
+    if (!dataBuffer) {
+      console.error("ERROR: No buffer in file");
+      return res.status(400).json({ error: "File buffer is empty" });
+    }
+    
+    console.log("File buffer size:", dataBuffer.length, "bytes");
+    
+    console.log("Parsing PDF...");
     const pdfData = await pdfParse(dataBuffer);
     const text = pdfData.text;
-    // 🟦 ADDED — Detect Aadhar, PAN, Certificates, Marksheet, invoices, etc.
+    
+    console.log("PDF parsed successfully");
+    console.log("Extracted text length:", text.length, "characters");
+    
+    if (!text || text.trim().length === 0) {
+      console.error("ERROR: No text extracted from PDF");
+      return res.status(400).json({ error: "Could not extract text from PDF" });
+    }
+    //  ADDED — Detect Aadhar, PAN, Certificates, Marksheet, invoices, etc.
     const badKeywords = [
       // Govt ID documents
       "aadhar",
@@ -99,26 +130,49 @@ Resume text: ${text}`;
       prompt += "\n⚠️ Note: The resume may contain copied or repetitive content.";
     }
 
+    console.log("Calling Groq API with model: llama-3.1-8b-instant");
+    console.log("Prompt length:", prompt.length, "characters");
+    
     const completion = await groq.chat.completions.create({
       model: "llama-3.1-8b-instant",
       messages: [{ role: "user", content: prompt }],
     });
 
+    console.log("Groq API response received");
     const result = completion.choices[0].message.content;
+    console.log("Analysis result length:", result.length, "characters");
 
-    // Save to DB
+    // Save to DB with user ID
+    const userId = req.userId || 'anonymous';
+    console.log("Saving to database - User:", userId, "File:", req.file.originalname);
+    
     const savedResume = await Resume.create({
-      filename: req.file.filename,
+      userId,
+      filename: req.file.originalname,
       textContent: text,
       analysis: result,
       jobRole,
     });
 
+    console.log("Resume saved successfully - ID:", savedResume._id);
+    console.log("========== RESUME UPLOAD SUCCESS ==========\n");
     res.json({ success: true, analysis: result, saved: savedResume, warnings });
 
   } catch (err) {
-    console.error("Error analyzing resume:", err);
-    res.status(500).json({ error: "Resume analysis failed" });
+    console.error("\n========== RESUME UPLOAD ERROR ==========");
+    console.error("Error Type:", err.constructor.name);
+    console.error("Error Message:", err.message);
+    console.error("Error Stack:", err.stack);
+    if (err.response?.status) {
+      console.error("API Response Status:", err.response.status);
+      console.error("API Response Data:", err.response.data);
+    }
+    console.error("========== END ERROR ==========\n");
+    
+    res.status(500).json({ 
+      error: "Resume analysis failed",
+      details: err.message 
+    });
   }
 };
 

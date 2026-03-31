@@ -4,14 +4,12 @@ const multer = require("multer");
 const { analyzeResume, getAllResumes } = require("../controllers/resumeController");
 const authMiddleware=require("../middleware/authMiddleware")
 
-// Multer setup
-const storage = multer.diskStorage({
-  destination: "uploads/",
-  filename: (req, file, cb) => cb(null, Date.now() + "-" + file.originalname)
-});
+// Multer setup - Use memory storage for better performance
+const storage = multer.memoryStorage();
 
 const upload = multer({
   storage,
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
   fileFilter: (req, file, cb) => {
     if (file.mimetype === "application/pdf") cb(null, true);
     else cb(new Error("Only PDF resumes are allowed"), false);
@@ -26,6 +24,7 @@ router.post("/upload",authMiddleware, (req, res, next) => {
   uploadSingle(req, res, function (err) {
     if (err) {
       // Multer file type error
+      console.error("Multer error:", err.message);
       return res.status(400).json({ error: err.message });
     }
     next(); // proceed to analyzeResume if file is valid
