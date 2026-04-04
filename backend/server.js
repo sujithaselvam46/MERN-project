@@ -11,7 +11,11 @@ const feedbackRoutes = require('./routes/feedbackRoutes');
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: "https://mern-project-r5qp-fqmyttdu9-sujithaselvam46-7320s-projects.vercel.app",
+  methods: "GET,POST,PUT,DELETE",
+  credentials: true
+}));
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
