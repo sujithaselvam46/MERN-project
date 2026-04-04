@@ -25,7 +25,7 @@ const Login = () => {
       console.log("Attempting login with:", { email, password: "***" });
       
       const res = await axios.post(
-        "https://backend-4jxf.onrender.com/api/auth/login",
+        "http://localhost:5000/api/auth/login",
         { email, password }
       );
 

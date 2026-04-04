@@ -53,7 +53,7 @@ const ResumeUploader = () => {
       
       console.log("Sending request to backend...");
       const response = await axios.post(
-         'https://backend-4jxf.onrender.com/api/resume/upload',
+         'http://localhost:5000/api/resume/upload',
         formData,
         { headers: { 'Content-Type': 'multipart/form-data',   "Authorization": `Bearer ${token}` } }
       );

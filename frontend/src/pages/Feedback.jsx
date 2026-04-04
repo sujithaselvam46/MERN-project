@@ -23,7 +23,7 @@ const Feedback = () => {
 
     try {
       const token = localStorage.getItem("token");
-      await axios.post("https://backend-4jxf.onrender.com/api/feedback", 
+      await axios.post("http://localhost:5000/api/feedback", 
         { message },
         { headers: { "Authorization": `Bearer ${token}` } }
       );
