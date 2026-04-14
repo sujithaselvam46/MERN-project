@@ -17,7 +17,7 @@ const ResumeUploader = () => {
   const [warnings, setWarnings] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // ✅ Correct file handler (ONLY this needed)
+  
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     if (!selectedFile) return;
@@ -107,8 +107,8 @@ const ResumeUploader = () => {
       <h1>AI RESUME ANALYZER</h1>
 
       <div className='jobRole'>
-        <label>JOB ROLE : </label>
-        <select value={jobRole} onChange={e => setJobRole(e.target.value)}>
+        <label htmlFor="jobRole-select">JOB ROLE :</label>
+        <select id="jobRole-select" value={jobRole} onChange={e => setJobRole(e.target.value)}>
           {jobRoles.map(role => (
             <option key={role} value={role}>{role}</option>
           ))}
@@ -116,9 +116,25 @@ const ResumeUploader = () => {
       </div>
 
       <div className='progress'>
-        <input type="file" accept="application/pdf" onChange={handleFileChange} />
+        <label htmlFor="resume-upload" className="custom-file-label">
+          <input
+            id="resume-upload"
+            type="file"
+            accept="application/pdf"
+            onChange={handleFileChange}
+            style={{ display: 'none' }}
+          />
+          <span className="file-btn-text">
+            <span style={{fontWeight:700}}>Choose File</span>
+            {file && (
+              <span style={{marginLeft:8, fontWeight:400}}>{file.name}</span>
+            )}
+          </span>
+        </label>
         <button onClick={handleUpload} disabled={loading}>
-          {loading ? 'Analyzing...' : 'Upload & Analyze'}
+          <span style={{ width: '100%', textAlign: 'center', display: 'inline-block' }}>
+            {loading ? 'Analyzing...' : 'Upload & Analyze'}
+          </span>
         </button>
       </div>
 
@@ -322,7 +338,7 @@ const ResumeUploader = () => {
                         />
                       </svg>
                       <div className="score-text">
-                        <span className="score-value">{scoreValue}</span>
+                        <span className="score-value">{scoreValue || 'N/A'}</span>
                         <span className="score-label">/ 100</span>
                       </div>
                     </div>
@@ -342,6 +358,27 @@ const ResumeUploader = () => {
                   </div>
                 ));
 
+                // Find recommendations and suggestions
+                const recommendations = otherSections.filter(s => /recommendation/i.test(s.heading || ""));
+                const suggestions = otherSections.filter(s => /suggestion/i.test(s.heading || ""));
+                const restSections = otherSections.filter(s => !/recommendation|suggestion/i.test(s.heading || ""));
+
+                // Always show Recommendations and Suggestions, even if missing
+                const alwaysRecommendations = recommendations.length > 0 ? recommendations : [{ heading: 'Recommendations', items: [
+                  'Tailor your resume for each job application by emphasizing the most relevant skills and experiences.',
+                  'Add measurable achievements (e.g., “Increased website speed by 30%”) to demonstrate impact.',
+                  'Include a short summary or objective at the top to quickly communicate your value.',
+                  'Highlight teamwork, leadership, and communication skills with specific examples.',
+                  'Keep formatting clean and consistent; use bullet points for readability.'
+                ] }];
+                const alwaysSuggestions = suggestions.length > 0 ? suggestions : [{ heading: 'Suggestions', items: [
+                  'Use action verbs (e.g., “developed”, “led”, “designed”) to start each bullet point.',
+                  'Keep your resume to one page if you have less than 10 years of experience.',
+                  'Proofread for spelling and grammar errors; ask a friend to review it.',
+                  'Add links to your portfolio, LinkedIn, or GitHub if relevant.',
+                  'Quantify your results wherever possible (e.g., “Managed a team of 5”, “Reduced costs by 15%”).'
+                ] }];
+
                 return (
                   <>
                     {/* Main 3 Points */}
@@ -352,9 +389,58 @@ const ResumeUploader = () => {
                     {/* Validation Score */}
                     {validationRender}
 
-                    {/* Recommendations & Improvements */}
+                    {/* Recommendations */}
                     <div className="other-sections-container">
-                      {otherSectionsRender}
+                      {alwaysRecommendations.map((section, idx) => (
+                        <div key={`rec-${idx}`} className="other-section-card">
+                          <h3 className="section-subheading">{section.heading}</h3>
+                          <ul className="section-list">
+                            {section.items.length > 0 ? (
+                              section.items.slice(0, 5).map((item, itemIdx) => (
+                                <li key={itemIdx}>{item}</li>
+                              ))
+                            ) : (
+                              <li className="section-empty">No recommendations provided.</li>
+                            )}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Suggestions (after Recommendations) */}
+                    <div className="other-sections-container">
+                      {alwaysSuggestions.map((section, idx) => (
+                        <div key={`sugg-${idx}`} className="other-section-card">
+                          <h3 className="section-subheading">{section.heading}</h3>
+                          <ul className="section-list">
+                            {section.items.length > 0 ? (
+                              section.items.slice(0, 5).map((item, itemIdx) => (
+                                <li key={itemIdx}>{item}</li>
+                              ))
+                            ) : (
+                              <li className="section-empty">No suggestions provided.</li>
+                            )}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Other Sections */}
+                    <div className="other-sections-container">
+                      {restSections.map((section, idx) => (
+                        <div key={`other-${idx}`} className="other-section-card">
+                          <h3 className="section-subheading">{section.heading}</h3>
+                          <ul className="section-list">
+                            {section.items.length > 0 ? (
+                              section.items.slice(0, 5).map((item, itemIdx) => (
+                                <li key={itemIdx}>{item}</li>
+                              ))
+                            ) : (
+                              <li className="section-empty">No content provided.</li>
+                            )}
+                          </ul>
+                        </div>
+                      ))}
                     </div>
                   </>
                 );
